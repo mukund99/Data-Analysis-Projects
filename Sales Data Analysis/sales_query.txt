@@ -1,0 +1,38 @@
+# To have a look at the customer table
+SELECT * FROM sales.customers;
+
+# To find the number of customers
+SELECT COUNT(*) FROM sales.customers; 
+ 
+# To find different customer types
+SELECT DISTINCT customer_type FROM sales.customers; 
+
+# To have a look at the markets table
+SELECT * FROM sales.markets;
+
+# To find the number of markets
+SELECT COUNT(*) FROM sales.markets; 
+
+# To find the number of products
+SELECT COUNT(*) FROM sales.products; 
+
+# To find different product types
+SELECT DISTINCT product_type FROM sales.products; 
+
+# To have a look at the transaction table
+SELECT * FROM sales.transactions;
+
+# To find the number of transactions
+SELECT COUNT(*) FROM sales.transactions; 
+
+# To find the number of transactions happened on a yearly basis
+SELECT t.year,COUNT(*) AS number_of_transactions FROM (SELECT sales.transactions.order_date,sales.date.year FROM sales.transactions INNER JOIN sales.date ON sales.transactions.order_date = sales.date.date) AS t GROUP BY t.year ORDER BY t.year;
+
+# To find number of transactions per market
+SELECT t.markets_name,COUNT(*) AS no_of_transcations FROM (SELECT sales.transactions.*,sales.markets.* FROM sales.transactions INNER JOIN sales.markets ON sales.transactions.market_code = sales.markets.markets_code) AS t GROUP BY t.markets_name ORDER BY no_of_transcations desc;
+
+# To find number of transactions per customer
+SELECT t.custmer_name,COUNT(*) AS no_of_transcations FROM (SELECT sales.transactions.*,sales.customers.custmer_name FROM sales.transactions INNER JOIN sales.customers ON sales.transactions.customer_code = sales.customers.customer_code) AS t GROUP BY t.custmer_name ORDER BY no_of_transcations desc;
+
+# To find revenue per year
+SELECT t.year,SUM(t.sales_amount) AS revenue FROM (SELECT sales.transactions.*,sales.date.* FROM sales.transactions INNER JOIN sales.date ON sales.transactions.order_date = sales.date.date) AS t GROUP BY t.year;
